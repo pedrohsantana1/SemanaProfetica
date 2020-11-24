@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:semana_profetica/pages/tela-inicial.dart';
+import 'package:get/route_manager.dart';
+import 'package:semana_profetica/app/bindings/teste_binding.dart';
+import 'package:semana_profetica/app/routes/app_pages.dart';
+import 'package:semana_profetica/app/routes/app_routes.dart';
+import 'package:semana_profetica/app/ui/theme/app_theme.dart';
+
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    GetMaterialApp(
+      title: 'Semana Profética',
+      debugShowCheckedModeBanner: false,
+      getPages: AppPages.routes,
+      initialRoute: Routes.INITIAL,
+      theme: appThemeData,
+
+    ));
+
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Semana Profética',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: TelaInicial(),
-    );
-  }
-}
+
