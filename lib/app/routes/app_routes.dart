@@ -4,5 +4,6 @@ abstract class Routes{
   static const REGISTER = '/register';
   static const LOGIN = '/login';
   static const DECRETOS = '/decretos';
+  static const PERFIL = '/perfil';
 
 }

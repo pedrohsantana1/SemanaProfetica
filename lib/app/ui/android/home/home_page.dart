@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:semana_profetica/app/controller/home_controller.dart';
 import 'package:semana_profetica/app/data/model/teste-model.dart';
+import 'package:semana_profetica/app/data/model/user-model.dart';
 
 import 'package:semana_profetica/app/ui/android/comuns/cabecalho.dart';
 import 'package:semana_profetica/app/ui/android/comuns/rodape.dart';
@@ -17,7 +19,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
  
  // final Teste _teste = Get.arguments;
-                  
 
   @override
   Widget build(BuildContext context) {

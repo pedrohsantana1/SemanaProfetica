@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:semana_profetica/app/controller/home_controller.dart';
+import 'package:semana_profetica/app/data/model/user-model.dart';
+import 'package:semana_profetica/app/routes/app_routes.dart';
 
 class Cabecalho extends StatefulWidget {
   @override
@@ -6,6 +10,9 @@ class Cabecalho extends StatefulWidget {
 }
 
 class _CabecalhoState extends State<Cabecalho> {
+
+  final HomeController _homeController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -31,13 +38,29 @@ class _CabecalhoState extends State<Cabecalho> {
                 ),
                 Padding(
                     padding: EdgeInsets.only(
-                      right: 20,
+                      right: 5,
                     ),
-                    child: CircleAvatar(
+                    child: 
+                    /*
+                    CircleAvatar(
                       backgroundColor: Colors.red,
-                      backgroundImage: AssetImage("assets/perfil.jpg"),
+                      backgroundImage: AssetImage("assets/user-icon.png"),
                       radius: 20,
-                    )),
+                      
+                    )*/
+                    FlatButton(
+                      onPressed: () { 
+                         Get.offAllNamed(Routes.PERFIL, arguments: _homeController.user);
+                       },
+                      child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage("assets/perfil.png"),
+                      radius: 22,
+                      
+                    ),
+                  )
+
+                    ),
               ],
             ),
           ),

@@ -1,3 +1,5 @@
+import 'package:semana_profetica/app/data/helper/crud-helper.dart';
+
 class Usuario {
   String id;
   String nome;
@@ -10,7 +12,7 @@ class Usuario {
 
   Usuario(
       {
-      
+      this.id,
       this.nome,
       this.email,
       this.senha,
@@ -18,7 +20,6 @@ class Usuario {
       this.dataAniversario,
       this.telefone,
       this.imagem
-      
       });
 
   Usuario.fromJson(Map<String, dynamic> json) {
@@ -29,7 +30,6 @@ class Usuario {
     endereco = json['endereco'];
     dataAniversario = json['data_aniversario'];
     telefone = json['telefone'];
-    imagem = json['imagem'];
   }
 
   Map<String, dynamic> toJson() {
@@ -41,5 +41,29 @@ class Usuario {
     data['dataAniversario'] = this.dataAniversario;
     data['telefone'] = this.telefone;
     return data;
+  }
+
+  Usuario.fromMap(Map map) {
+    this.id = map[CrudHelper.usuarioIdLogado];
+    this.nome = map[CrudHelper.usuarioNome];
+    this.email = map[CrudHelper.usuarioEmail];
+    this.senha = map[CrudHelper.usuarioSenha];
+    this.endereco = map[CrudHelper.usuarioEndereco];
+    this.dataAniversario = map[CrudHelper.usuarioData];
+    this.telefone = map[CrudHelper.usuarioTelefone];
+
+  }
+
+  Map toMap() {
+    Map<String, dynamic> map = {
+      "idlogado": this.id,
+      "nome": this.nome,
+      "email": this.email,
+      "senha": this.senha,
+      "endereco": this.endereco,
+      "data": this.dataAniversario,
+      "telefone": this.telefone,
+    };
+    return map;
   }
 }
