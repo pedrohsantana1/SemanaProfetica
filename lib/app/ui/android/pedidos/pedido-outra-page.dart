@@ -6,12 +6,12 @@ import 'package:semana_profetica/app/routes/app_routes.dart';
 import '../comuns/cabecalho.dart';
 import '../comuns/rodape.dart';
 
-class Pedidos extends StatefulWidget {
+class PedidosOutros extends StatefulWidget {
   @override
   _PedidosState createState() => _PedidosState();
 }
 
-class _PedidosState extends State<Pedidos> {
+class _PedidosState extends State<PedidosOutros> {
   List _listaPedidos = [];
   final PedidoController _pedidoController = Get.find();
   final String nomePedido = Get.arguments;
@@ -54,12 +54,10 @@ class _PedidosState extends State<Pedidos> {
           labelBackgroundColor: Colors.blueAccent,
         ),
         SpeedDialChild(
-            child: Icon(Icons.person, color: Colors.white),
+            child: Icon(Icons.arrow_back, color: Colors.white),
             backgroundColor: Colors.grey,
-            onTap: (){
-              Get.offAndToNamed(Routes.PEDIDOSOUTROS, arguments: nomePedido);
-            },
-            label: 'Pedir para alguém',
+            onTap: () => Get.offAndToNamed(Routes.PEDIDOS, arguments: nomePedido),
+            label: 'Voltar',
             labelStyle: TextStyle(fontWeight: FontWeight.w500),
             labelBackgroundColor: Colors.grey),
       ],
@@ -98,10 +96,21 @@ class _PedidosState extends State<Pedidos> {
                       shrinkWrap: true,
                       children: <Widget>[
                         Center(
+
                           child: Text(
                             "Pedidos - " + nomePedido,
                             style: TextStyle(
                               fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Center(
+                          child: Text(
+                            "Pedidos para outros" ,
+                            style: TextStyle(
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -141,3 +150,31 @@ class _PedidosState extends State<Pedidos> {
   }
 }
 
+void addPedidoVoce(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Adicionar pedido"),
+          content: TextField(
+            //  controller: _controllerPedido,
+            decoration: InputDecoration(labelText: "Digite seu pedido"),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Cancelar"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text("Salvar"),
+              onPressed: () {
+                //  salvarPedido();
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      });
+}

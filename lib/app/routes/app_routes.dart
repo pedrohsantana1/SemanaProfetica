@@ -6,5 +6,5 @@ abstract class Routes{
   static const DECRETOS = '/decretos';
   static const PERFIL = '/perfil';
   static const PEDIDOS = '/pedidos';
-
+  static const PEDIDOSOUTROS = '/pedidosoutros';
 }

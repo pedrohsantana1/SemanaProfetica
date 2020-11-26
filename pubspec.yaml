@@ -1,5 +1,5 @@
 name: semana_profetica
-description: A new Flutter project.
+description: App para a semana profética na igreja nova chance
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -35,6 +35,7 @@ dependencies:
   http: ^0.12.0+1
   sqflite: ^1.3.0
   esys_flutter_share: ^1.0.2
+  flutter_speed_dial: ^1.2.5
   
   
 dev_dependencies:
