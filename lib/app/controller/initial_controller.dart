@@ -23,14 +23,12 @@ class InitialController extends GetxController {
   void onInit() {
     // É a mesma coisa que initState()
     super.onInit();
-    print("Iniciou");
     _verificar();
   }
 
 
   _verificar() async {
     List usuarioRecuperados = await _db.recuperarUsuario();
-    print("Recupera" + usuarioRecuperados.toString());
     if (usuarioRecuperados.isEmpty) {
         this.verifica.value = "deslogado";
  

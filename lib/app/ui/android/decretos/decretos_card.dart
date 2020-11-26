@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:semana_profetica/app/routes/app_routes.dart';
+
 
 import '../pedidos/pedidos_page.dart';
 
@@ -18,17 +21,17 @@ class _DecretosCardState extends State<DecretosCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 10, right: 10, top: 6),
-      child: Container(
+      padding: EdgeInsets.only(left: 10, right: 10, top: 8),
+      child: 
+      Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(40)),
           color: Colors.white,
         ),
-        height: 60,
+        height: 50,
         child: FlatButton(
             onPressed: () {
-              Navigator.pop(context);
-              Navigator.push(context,MaterialPageRoute(builder: (context)=> Pedidos()));
+              Get.offAndToNamed(Routes.PEDIDOS, arguments: widget.titulo);
             },
             child: Text(
               widget.titulo,

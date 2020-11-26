@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 
 class CardInicial extends StatefulWidget {
@@ -80,8 +81,9 @@ class _CardInicialState extends State<CardInicial> {
                       )
                   ),
                   FlatButton(
-                      onPressed: (){
-
+                      onPressed: () async {
+                        final ByteData bytes = await rootBundle.load('assets/post01.png');
+                        await Share.file('esys image', 'esys.png', bytes.buffer.asUint8List(), 'image/png', text: 'Semana Profética - Igreja Nova Chance');
                       },
                       child: Icon(
                           Icons.share,

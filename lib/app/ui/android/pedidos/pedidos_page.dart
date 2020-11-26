@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:semana_profetica/app/controller/pedido_controller.dart';
 
 import '../comuns/cabecalho.dart';
 import '../comuns/rodape.dart';
@@ -13,6 +15,9 @@ class Pedidos extends StatefulWidget {
 class _PedidosState extends State<Pedidos> {
   List _listaPedidos = [];
   TextEditingController _controllerPedido = TextEditingController();
+  final PedidoController _userController = Get.find();
+  final String nomePedido = Get.arguments;
+
 
   _salvarPedido() {
     String textoDigitado = _controllerPedido.text;
@@ -47,7 +52,7 @@ class _PedidosState extends State<Pedidos> {
                       children: <Widget>[
                         Center(
                           child: Text(
-                            "Pedidos",
+                            "Pedidos - " + nomePedido,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
