@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:semana_profetica/app/controller/pedido_controller.dart';
+import 'package:semana_profetica/app/controller/home_controller.dart';
+import 'package:semana_profetica/app/controller/pedido-outra-controller.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:semana_profetica/app/data/model/pedido-outra-model.dart';
 import 'package:semana_profetica/app/routes/app_routes.dart';
 import '../comuns/cabecalho.dart';
 import '../comuns/rodape.dart';
 
-class PedidosOutros extends StatefulWidget {
+class PedidosOutra extends StatefulWidget {
   @override
   _PedidosState createState() => _PedidosState();
 }
 
-class _PedidosState extends State<PedidosOutros> {
-  List _listaPedidos = [];
-  final PedidoController _pedidoController = Get.find();
+class _PedidosState extends State<PedidosOutra> {
+  //List _listaPedidos = [];
+  List<PedidoOutra> _listaPedidos = List<PedidoOutra>();
+  final PedidoOutraController _pedidoController = Get.find();
   final String nomePedido = Get.arguments;
+  final HomeController _homeController = Get.find();
+
   SpeedDial buildSpeedDial(BuildContext context) {
     return SpeedDial(
       animatedIcon: AnimatedIcons.menu_close,
@@ -43,7 +48,7 @@ class _PedidosState extends State<PedidosOutros> {
             content: Column(
               children: [
                 TextField(
-                  controller: _pedidoController.pedidoTextController,
+                  controller: _pedidoController.texto,
                   decoration: InputDecoration(labelText: "Informe o pedido"),
                 ),
               ],
@@ -56,7 +61,8 @@ class _PedidosState extends State<PedidosOutros> {
         SpeedDialChild(
             child: Icon(Icons.arrow_back, color: Colors.white),
             backgroundColor: Colors.grey,
-            onTap: () => Get.offAndToNamed(Routes.PEDIDOS, arguments: nomePedido),
+            onTap: () =>
+                Get.offAndToNamed(Routes.PEDIDOS, arguments: nomePedido),
             label: 'Voltar',
             labelStyle: TextStyle(fontWeight: FontWeight.w500),
             labelBackgroundColor: Colors.grey),
@@ -64,16 +70,69 @@ class _PedidosState extends State<PedidosOutros> {
     );
   }
 
-  salvarPedido() {
-    String textoDigitado = _pedidoController.pedidoTextController.text;
-    Map<String, dynamic> pedido = Map();
-    pedido["titulo"] = textoDigitado;
-    pedido["realizada"] = false;
+  recuperarPedidos() async {
+    List pedidosRecuperados = await _pedidoController.carregarPedidos(
+        _homeController.user.id, nomePedido);
+
     setState(() {
-      _listaPedidos.add(pedido);
+      _listaPedidos = pedidosRecuperados;
     });
-    //   _salvarArquivo();
-    _pedidoController.pedidoTextController.text = "";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    recuperarPedidos();
+  }
+
+  salvarPedido() {
+    String textoDigitado = _pedidoController.texto.text;
+    PedidoOutra novoPedido = new PedidoOutra(
+      idUsuario: _homeController.user.id,
+      titulo: nomePedido,
+      pedido: textoDigitado,
+      realizado: "false",
+    );
+
+    _pedidoController.cadastrar(novoPedido);
+    recuperarPedidos();
+    //_pedidoController.carregarPedidos();
+    _pedidoController.texto.text = "";
+  }
+
+  atualizarPedido(PedidoOutra pedido) {
+    String textoDigitado = _pedidoController.texto.text;
+
+    pedido.idUsuario = _homeController.user.id;
+    pedido.titulo = nomePedido;
+    pedido.pedido = textoDigitado;
+    pedido.realizado = "false";
+
+    _pedidoController.atualizar(pedido);
+    recuperarPedidos();
+    //_pedidoController.carregarPedidos();
+    _pedidoController.texto.text = "";
+  }
+
+  void CaixaDialogo(String texto, PedidoOutra pedido) {
+    Get.defaultDialog(
+      title: "Semana Profética",
+      onConfirm: () {
+        atualizarPedido(pedido);
+        Get.back();
+      },
+      onCancel: () {},
+      textConfirm: texto,
+      textCancel: "Cancelar",
+      content: Column(
+        children: [
+          TextField(
+            controller: _pedidoController.texto,
+            decoration: InputDecoration(labelText: "Informe o pedido"),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -92,11 +151,10 @@ class _PedidosState extends State<PedidosOutros> {
                     padding: EdgeInsets.only(
                       top: 10,
                     ),
-                    child: ListView(
-                      shrinkWrap: true,
+                    child: Column(
+                      //shrinkWrap: true,
                       children: <Widget>[
                         Center(
-
                           child: Text(
                             "Pedidos - " + nomePedido,
                             style: TextStyle(
@@ -105,35 +163,91 @@ class _PedidosState extends State<PedidosOutros> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Center(
                           child: Text(
-                            "Pedidos para outros" ,
+                            "Pedidos para outros",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: ListView.builder(
-                              shrinkWrap: true,
+                        Expanded(
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height / 1.8,
+                            child: ListView.builder(
                               itemCount: _listaPedidos.length,
                               itemBuilder: (context, index) {
-                                return CheckboxListTile(
-                                  activeColor: Colors.black,
-                                  title: Text(
-                                    _listaPedidos[index]["titulo"],
-                                  ),
-                                  value: _listaPedidos[index]["realizada"],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _listaPedidos[index]["realizada"] = value;
-                                    });
+                                final pedido = _listaPedidos[index];
+                                bool valor;
+                                if (pedido.realizado == "true") {
+                                  valor = true;
+                                } else if (pedido.realizado == "false") {
+                                  valor = false;
+                                }
+                                return Dismissible(
+                                  key: Key(DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString()),
+                                  //direction: DismissDirection.endToStart,
+                                  //  direction: DismissDirection.,
+                                  onDismissed: (direction) {
+                                    if (direction ==
+                                        DismissDirection.endToStart) {
+                                      CaixaDialogo("Atualizar", pedido);
+                                    } else if (direction ==
+                                        DismissDirection.startToEnd) {
+                                      _pedidoController.excluir(pedido);
+                                    }
                                   },
+
+                                  background: Container(
+                                    color: Colors.red,
+                                    padding: EdgeInsets.all(5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.delete,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  secondaryBackground: Container(
+                                    color: Colors.blue,
+                                    padding: EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.edit,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  child: CheckboxListTile(
+                                    activeColor: Colors.black,
+                                    title: Text(
+                                      pedido.pedido,
+                                    ),
+                                    value: valor,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        print("teste " + value.toString());
+                                        pedido.realizado = value.toString();
+                                      });
+                                    },
+                                  ),
                                 );
-                              }),
+                              },
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -148,33 +262,4 @@ class _PedidosState extends State<PedidosOutros> {
       floatingActionButton: buildSpeedDial(context),
     );
   }
-}
-
-void addPedidoVoce(BuildContext context) {
-  showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Adicionar pedido"),
-          content: TextField(
-            //  controller: _controllerPedido,
-            decoration: InputDecoration(labelText: "Digite seu pedido"),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Cancelar"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            FlatButton(
-              child: Text("Salvar"),
-              onPressed: () {
-                //  salvarPedido();
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      });
 }

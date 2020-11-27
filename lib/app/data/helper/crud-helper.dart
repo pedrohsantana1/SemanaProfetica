@@ -1,4 +1,5 @@
 import 'package:semana_profetica/app/data/model/pedido-model.dart';
+import 'package:semana_profetica/app/data/model/pedido-outra-model.dart';
 import 'package:semana_profetica/app/data/model/user-model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -26,6 +27,13 @@ class CrudHelper {
   static final String pedidoPedido = "pedido";
   static final String pedidoRealizado = "realizado";
   
+  //Tabela PedidosOutra
+  static final String pedidoOutraTabela = "pedidoOutra";
+  static final String pedidoOutraId = "id";
+  static final String pedidoOutraIdLogado = "idlogado";
+  static final String pedidoOutraTitulo = "titulo";
+  static final String pedidoOutraPedido = "pedido";
+  static final String pedidoOutraRealizado = "realizado";
 
   factory CrudHelper(){
     return _crudHelper;
@@ -79,8 +87,15 @@ class CrudHelper {
         "$pedidoPedido	VARCHAR(40) NOT NULL,"   
         "$pedidoRealizado	VARCHAR(40) NOT NULL )";
 
+    String tabelaPedidoOutra = "CREATE TABLE $pedidoOutraTabela ($pedidoOutraId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+        "$pedidoOutraIdLogado	VARCHAR(40) NOT NULL,"
+        "$pedidoOutraTitulo	VARCHAR(40) NOT NULL,"
+        "$pedidoOutraPedido	VARCHAR(40) NOT NULL,"   
+        "$pedidoOutraRealizado	VARCHAR(40) NOT NULL )";
+
      await db.execute(tabelaUsuario);
      await db.execute(tabelaPedido);
+     await db.execute(tabelaPedidoOutra);
 
   }
 
@@ -114,7 +129,7 @@ class CrudHelper {
 
     var bancoDados = await db;
     int resultado = await bancoDados.insert(pedidoTabela, pedido.toMap());
-    print("Banco Pedido "+resultado.toString());
+    print("Banco Pedido Normal"+resultado.toString());
     return resultado;
   }
 
@@ -142,7 +157,7 @@ class CrudHelper {
 
   }
 
-    Future<int> excluirPedido(Pedido pedido) async{
+Future<int> excluirPedido(Pedido pedido) async{
     var bancoDados = await db;
     return await bancoDados.delete(
         pedidoTabela,
@@ -151,48 +166,47 @@ class CrudHelper {
     );
   }
 
-
-  
-
-  
-
-/*
-  recuperarAnimaisId(int posicao) async{
+//Tabela Pedido Outra
+  Future<int> salvarPedidoOutra(PedidoOutra pedido) async{
 
     var bancoDados = await db;
-    String sql = "SELECT * FROM $animalTabela WHERE idAnimal = $posicao";
-    List animais = await bancoDados.rawQuery(sql);
-    return animais;
-  }
-
-  Future<int> atualizarAnimal(Animal animal) async{
-    var bancoDados = await db;
-    return await bancoDados.update(
-        animalTabela,
-        animal.toMap(),
-        where: "idAnimal = ?",
-        whereArgs: [animal.idAnimal]
-    );
-  }
-
-  Future<int> excluirAnimal(int id) async{
-    var bancoDados = await db;
-    return await bancoDados.delete(
-        animalTabela,
-        where: "idAnimal = ?",
-        whereArgs: [id]
-    );
-  }
-
-
-
-  //Operaçõs Tabela Alimento
-  Future<int> salvarAlimento(Alimento alimento) async{
-
-    var bancoDados = await db;
-    int resultado = await bancoDados.insert(alimentoTabela, alimento.toMap());
+    int resultado = await bancoDados.insert(pedidoOutraTabela, pedido.toMap());
+    print("Banco Pedido Outra"+resultado.toString());
     return resultado;
   }
-*/
 
+  recuperarPedidoOutra(String idusuario, String titulo) async{
+
+    var bancoDados = await db;
+    String sql = 'SELECT * FROM $pedidoOutraTabela WHERE $pedidoOutraIdLogado = "$idusuario" AND $pedidoOutraTitulo = "$titulo"';
+
+    List pedidos = await bancoDados.rawQuery(sql);
+    return pedidos;
+  }
+
+  Future<int> atualizarPedidoOutra(PedidoOutra pedido) async{
+    var bancoDados = await db;
+    int retorno = await bancoDados.rawUpdate(
+      '''
+        UPDATE $pedidoOutraTabela 
+        SET pedido = ? 
+        WHERE $pedidoOutraIdLogado = ? AND $pedidoOutraTitulo = ? AND $pedidoOutraId = ?
+        ''', 
+        [pedido.pedido, pedido.idUsuario, pedido.titulo, pedido.idTabela]
+    );
+
+    return retorno;
+
+  }
+
+
+Future<int> excluirPedidoOutra(PedidoOutra pedido) async{
+    var bancoDados = await db;
+    return await bancoDados.delete(
+        pedidoOutraTabela,
+        where: "$pedidoOutraId = ?",
+        whereArgs: [pedido.idTabela]
+    );
+
+  }
 }

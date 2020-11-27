@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:semana_profetica/app/bindings/home_binding.dart';
 import 'package:semana_profetica/app/bindings/initial_binding.dart';
+import 'package:semana_profetica/app/bindings/pedidos-outra-binding.dart';
 import 'package:semana_profetica/app/bindings/pedidos_binding.dart';
 import 'package:semana_profetica/app/bindings/user_binding.dart';
 import 'package:semana_profetica/app/ui/android/decretos/decretos_page.dart';
@@ -23,6 +24,6 @@ class AppPages{
     GetPage(name: Routes.REGISTER, page: () => CadastroPage(), binding: UserBinding()),
     GetPage(name: Routes.PERFIL, page: () => PerfilPage(), binding: UserBinding()),
     GetPage(name: Routes.PEDIDOS, page: () => Pedidos(), binding: PedidoBinding()),
-    GetPage(name: Routes.PEDIDOSOUTROS, page: () => PedidosOutros(), binding: PedidoBinding()),
+    GetPage(name: Routes.PEDIDOSOUTROS, page: () => PedidosOutra(), binding: PedidoOutraBinding()),
   ];
 }
