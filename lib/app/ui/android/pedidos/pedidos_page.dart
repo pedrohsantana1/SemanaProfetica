@@ -61,7 +61,7 @@ class _PedidosState extends State<Pedidos> {
         SpeedDialChild(
             child: Icon(Icons.person, color: Colors.white),
             backgroundColor: Colors.grey,
-            onTap: (){
+            onTap: () {
               Get.offAndToNamed(Routes.PEDIDOSOUTROS, arguments: nomePedido);
             },
             label: 'Pedir para alguém',
@@ -71,25 +71,15 @@ class _PedidosState extends State<Pedidos> {
     );
   }
 
-  recuperarPedidos() async{
-    print("Como está "+nomePedido);
-    List pedidosRecuperados =  await _pedidoController.carregarPedidos(_homeController.user.id, nomePedido);
-    List<Pedido> listaTemporaria = List<Pedido>();
-
-    for( var item in pedidosRecuperados)
-    {
-      //Pedido pedido = Pedido.fromMap( item);
-       Pedido pedido = Pedido(id: item.id, pedido: item.pedido, titulo: item.titulo, realizado: item.realizado);
-       listaTemporaria.add(pedido);
-    }
+  recuperarPedidos() async {
+    List pedidosRecuperados = await _pedidoController.carregarPedidos(
+        _homeController.user.id, nomePedido);
 
     setState(() {
-      _listaPedidos = listaTemporaria;
+      _listaPedidos = pedidosRecuperados;
     });
-    listaTemporaria = null;
 
   }
-
 
   @override
   void initState() {
@@ -99,18 +89,52 @@ class _PedidosState extends State<Pedidos> {
 
   salvarPedido() {
     String textoDigitado = _pedidoController.pedidoTextController.text;
-
     Pedido novoPedido = new Pedido(
-      id: _homeController.user.id,
+      idUsuario: _homeController.user.id,
       titulo: nomePedido,
       pedido: textoDigitado,
-      realizado: "false", 
+      realizado: "false",
     );
 
-     _pedidoController.cadastrar(novoPedido);
-     recuperarPedidos();
+    _pedidoController.cadastrar(novoPedido);
+    recuperarPedidos();
     //_pedidoController.carregarPedidos();
     _pedidoController.pedidoTextController.text = "";
+  }
+
+  atualizarPedido(Pedido pedido) {
+    String textoDigitado = _pedidoController.pedidoTextController.text;
+    
+    pedido.idUsuario = _homeController.user.id;
+    pedido.titulo =  nomePedido;
+    pedido.pedido =  textoDigitado;
+    pedido.realizado = "false";
+  
+    _pedidoController.atualizar(pedido);
+    recuperarPedidos();
+    //_pedidoController.carregarPedidos();
+    _pedidoController.pedidoTextController.text = "";
+  }
+
+  void CaixaDialogo(String texto, Pedido pedido) {
+    Get.defaultDialog(
+      title: "Semana Profética",
+      onConfirm: () {
+        atualizarPedido(pedido);
+        Get.back();
+      },
+      onCancel: () {},
+      textConfirm: texto,
+      textCancel: "Cancelar",
+      content: Column(
+        children: [
+          TextField(
+            controller: _pedidoController.pedidoTextController,
+            decoration: InputDecoration(labelText: "Informe o pedido"),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -129,8 +153,8 @@ class _PedidosState extends State<Pedidos> {
                     padding: EdgeInsets.only(
                       top: 10,
                     ),
-                    child: ListView(
-                      shrinkWrap: true,
+                    child: Column(
+                      //shrinkWrap: true,
                       children: <Widget>[
                         Center(
                           child: Text(
@@ -141,35 +165,79 @@ class _PedidosState extends State<Pedidos> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: ListView.builder(
-                              shrinkWrap: true,
+                        Expanded(
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height / 1.8,
+                            child: ListView.builder(
                               itemCount: _listaPedidos.length,
                               itemBuilder: (context, index) {
                                 final pedido = _listaPedidos[index];
                                 bool valor;
-                                if(pedido.realizado == "true"){
+                                if (pedido.realizado == "true") {
                                   valor = true;
-                                }
-                                else if (pedido.realizado == "false"){
+                                } else if (pedido.realizado == "false") {
                                   valor = false;
-                                } 
-                                print("Realizado "+pedido.realizado);        
-                                return CheckboxListTile(
-                                  activeColor: Colors.black,
-                                  title: Text(
-                                    pedido.pedido,
-                                  ),
-                                  value: valor,
-                                  onChanged: (value) {
-                                    setState(() {   
-                                      print("teste "+value.toString());
-                                      pedido.realizado = value.toString();
-                                    });
+                                }
+                                return Dismissible(
+                                  key: Key(DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString()),
+                                  //direction: DismissDirection.endToStart,
+                                  //  direction: DismissDirection.,
+                                  onDismissed: (direction) {
+                                    if (direction ==
+                                        DismissDirection.endToStart) {
+                                      CaixaDialogo("Atualizar", pedido);
+                                    } else if (direction ==
+                                        DismissDirection.startToEnd) {
+                                      _pedidoController.excluir(pedido);
+                                    }
                                   },
+
+                                  background: Container(
+                                    color: Colors.red,
+                                    padding: EdgeInsets.all(5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.delete,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  secondaryBackground: Container(
+                                    color: Colors.blue,
+                                    padding: EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.edit,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  child: CheckboxListTile(
+                                    activeColor: Colors.black,
+                                    title: Text(
+                                      pedido.pedido,
+                                    ),
+                                    value: valor,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        print("teste " + value.toString());
+                                        pedido.realizado = value.toString();
+                                      });
+                                    },
+                                  ),
                                 );
-                              }),
+                              },
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -185,4 +253,3 @@ class _PedidosState extends State<Pedidos> {
     );
   }
 }
-

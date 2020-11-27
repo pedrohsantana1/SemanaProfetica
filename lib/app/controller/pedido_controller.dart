@@ -29,6 +29,16 @@ List<Pedido> pedidos  = List<Pedido>() .obs;
      await repository.cadastrar(pedido);
     // print("Controller " + pedido.id + "titulo "+ pedido.titulo + "pedido "+pedido.pedido + "realizado "+pedido.realizado );
   }
+  
+  atualizar(Pedido pedido) async{
+    int resultado = await repository.atualizar(pedido);
+    print("Resultado "+resultado.toString());
+  }
+
+  excluir(Pedido pedido) async{
+    int resultado = await repository.excluir(pedido);
+    print("Excluido"+resultado.toString());
+  }
 
   carregarPedidos(String idusuario, String titulo) async {
     
@@ -38,7 +48,8 @@ List<Pedido> pedidos  = List<Pedido>() .obs;
     for (var item in pedidosRecuperados) {
         Pedido pedido = Pedido.fromMap(item);
         listaTemporaria.add(pedido);
-      }
+    }
+  
      return listaTemporaria;
  
   }

@@ -127,6 +127,31 @@ class CrudHelper {
     return pedidos;
   }
 
+  Future<int> atualizarPedido(Pedido pedido) async{
+    var bancoDados = await db;
+    int retorno = await bancoDados.rawUpdate(
+      '''
+        UPDATE $pedidoTabela 
+        SET pedido = ? 
+        WHERE $pedidoIdLogado = ? AND $pedidoTitulo = ? AND $pedidoId = ?
+        ''', 
+        [pedido.pedido, pedido.idUsuario, pedido.titulo, pedido.idTabela]
+    );
+
+    return retorno;
+
+  }
+
+    Future<int> excluirPedido(Pedido pedido) async{
+    var bancoDados = await db;
+    return await bancoDados.delete(
+        pedidoTabela,
+        where: "$pedidoId = ?",
+        whereArgs: [pedido.idTabela]
+    );
+  }
+
+
   
 
   

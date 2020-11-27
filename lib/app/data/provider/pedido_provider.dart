@@ -17,6 +17,14 @@ var _db = CrudHelper();
       print("Chegou aqui");
   }
 
+  atualizar(Pedido pedido) async{
+    return _db.atualizarPedido(pedido);
+  }
+
+  excluir(Pedido pedido) async{
+    return _db.excluirPedido(pedido);
+  }
+
   carregarPedidos(String idusuario, String titulo) async{
     return await _db.recuperarPedido(idusuario, titulo);
   }

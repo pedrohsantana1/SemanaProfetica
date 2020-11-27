@@ -13,6 +13,14 @@ cadastrar(Pedido pedido){
   return apiClient.cadastrar(pedido);
 }
 
+atualizar(Pedido pedido){
+  return apiClient.atualizar(pedido);
+}
+
+excluir(Pedido pedido){
+  return apiClient.excluir(pedido);
+}
+
 carregarPedidos(String idusuario, String titulo){
   return apiClient.carregarPedidos(idusuario, titulo);
 }
