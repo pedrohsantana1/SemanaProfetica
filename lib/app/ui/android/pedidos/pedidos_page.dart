@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:semana_profetica/app/controller/home_controller.dart';
 import 'package:semana_profetica/app/controller/pedido_controller.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:semana_profetica/app/data/model/pedido-model.dart';
 import 'package:semana_profetica/app/routes/app_routes.dart';
 import '../comuns/cabecalho.dart';
 import '../comuns/rodape.dart';
@@ -12,9 +14,12 @@ class Pedidos extends StatefulWidget {
 }
 
 class _PedidosState extends State<Pedidos> {
-  List _listaPedidos = [];
+  //List _listaPedidos = [];
+  List<Pedido> _listaPedidos = List<Pedido>();
   final PedidoController _pedidoController = Get.find();
   final String nomePedido = Get.arguments;
+  final HomeController _homeController = Get.find();
+
   SpeedDial buildSpeedDial(BuildContext context) {
     return SpeedDial(
       animatedIcon: AnimatedIcons.menu_close,
@@ -66,15 +71,45 @@ class _PedidosState extends State<Pedidos> {
     );
   }
 
+  recuperarPedidos() async{
+    print("Como está "+nomePedido);
+    List pedidosRecuperados =  await _pedidoController.carregarPedidos(_homeController.user.id, nomePedido);
+    List<Pedido> listaTemporaria = List<Pedido>();
+
+    for( var item in pedidosRecuperados)
+    {
+      //Pedido pedido = Pedido.fromMap( item);
+       Pedido pedido = Pedido(id: item.id, pedido: item.pedido, titulo: item.titulo, realizado: item.realizado);
+       listaTemporaria.add(pedido);
+    }
+
+    setState(() {
+      _listaPedidos = listaTemporaria;
+    });
+    listaTemporaria = null;
+
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    recuperarPedidos();
+  }
+
   salvarPedido() {
     String textoDigitado = _pedidoController.pedidoTextController.text;
-    Map<String, dynamic> pedido = Map();
-    pedido["titulo"] = textoDigitado;
-    pedido["realizada"] = false;
-    setState(() {
-      _listaPedidos.add(pedido);
-    });
-    //   _salvarArquivo();
+
+    Pedido novoPedido = new Pedido(
+      id: _homeController.user.id,
+      titulo: nomePedido,
+      pedido: textoDigitado,
+      realizado: "false", 
+    );
+
+     _pedidoController.cadastrar(novoPedido);
+     recuperarPedidos();
+    //_pedidoController.carregarPedidos();
     _pedidoController.pedidoTextController.text = "";
   }
 
@@ -112,15 +147,25 @@ class _PedidosState extends State<Pedidos> {
                               shrinkWrap: true,
                               itemCount: _listaPedidos.length,
                               itemBuilder: (context, index) {
+                                final pedido = _listaPedidos[index];
+                                bool valor;
+                                if(pedido.realizado == "true"){
+                                  valor = true;
+                                }
+                                else if (pedido.realizado == "false"){
+                                  valor = false;
+                                } 
+                                print("Realizado "+pedido.realizado);        
                                 return CheckboxListTile(
                                   activeColor: Colors.black,
                                   title: Text(
-                                    _listaPedidos[index]["titulo"],
+                                    pedido.pedido,
                                   ),
-                                  value: _listaPedidos[index]["realizada"],
+                                  value: valor,
                                   onChanged: (value) {
-                                    setState(() {
-                                      _listaPedidos[index]["realizada"] = value;
+                                    setState(() {   
+                                      print("teste "+value.toString());
+                                      pedido.realizado = value.toString();
                                     });
                                   },
                                 );

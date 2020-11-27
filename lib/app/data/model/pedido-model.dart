@@ -1,3 +1,5 @@
+import 'package:semana_profetica/app/data/helper/crud-helper.dart';
+
 class Pedido {
 
   String id;
@@ -7,7 +9,7 @@ class Pedido {
   
 
 
-  Pedido({ id, titulo, pedido, realizado });
+  Pedido({ this.id, this.titulo, this.pedido, this.realizado });
 
 
   Pedido.fromJson(Map<String, dynamic> json){
@@ -24,5 +26,22 @@ class Pedido {
     data['pedido'] = this.pedido;
     data['realizado'] = this.realizado;
     return data;
+  }
+
+  Pedido.fromMap(Map map) {
+    this.id = map[CrudHelper.pedidoIdLogado];
+    this.titulo = map[CrudHelper.pedidoTitulo];
+    this.pedido = map[CrudHelper.pedidoPedido];
+    this.realizado = map[CrudHelper.pedidoRealizado];
+  }
+
+  Map toMap() {
+    Map<String, dynamic> map = {
+      "idlogado": this.id,
+      "titulo": this.titulo,
+      "pedido": this.pedido,
+      "realizado": this.realizado,
+    };
+    return map;
   }
 }

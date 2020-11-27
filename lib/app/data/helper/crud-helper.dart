@@ -1,3 +1,4 @@
+import 'package:semana_profetica/app/data/model/pedido-model.dart';
 import 'package:semana_profetica/app/data/model/user-model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -6,7 +7,7 @@ class CrudHelper {
   static final CrudHelper _crudHelper = CrudHelper._internal();
   Database _db;
 
-  //Tabela Formula
+  //Tabela Usuario
   static final String usuarioTabela = "usuario";
   static final String usuarioId = "id";
   static final String usuarioIdLogado = "idlogado";
@@ -17,7 +18,14 @@ class CrudHelper {
   static final String usuarioData = "data";
   static final String usuarioTelefone = "telefone";
   
-
+  //Tabela Pedidos
+  static final String pedidoTabela = "pedido";
+  static final String pedidoId = "id";
+  static final String pedidoIdLogado = "idlogado";
+  static final String pedidoTitulo = "titulo";
+  static final String pedidoPedido = "pedido";
+  static final String pedidoRealizado = "realizado";
+  
 
   factory CrudHelper(){
     return _crudHelper;
@@ -65,17 +73,21 @@ class CrudHelper {
         "$usuarioData	VARCHAR(40) NOT NULL,"
         "$usuarioTelefone VARCHAR(40))";
 
+    String tabelaPedido = "CREATE TABLE $pedidoTabela ($pedidoId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+        "$pedidoIdLogado	VARCHAR(40) NOT NULL,"
+        "$pedidoTitulo	VARCHAR(40) NOT NULL,"
+        "$pedidoPedido	VARCHAR(40) NOT NULL,"   
+        "$pedidoRealizado	VARCHAR(40) NOT NULL )";
+
      await db.execute(tabelaUsuario);
+     await db.execute(tabelaPedido);
 
   }
 
-  //Operações Tabela Animal
+//Tabela Usuário
   Future<int> salvarUsuario(Usuario user) async{
 
     var bancoDados = await db;
-    //String sql = "PRAGMA table_info([$usuarioTabela]);";
-    //List animais = await bancoDados.rawQuery(sql);
-    //print("ol "+animais.toString());
     int resultado = await bancoDados.insert(usuarioTabela, user.toMap());
     print("Banco "+resultado.toString());
     return resultado;
@@ -96,6 +108,28 @@ class CrudHelper {
         usuarioTabela,
     );
   }
+
+  //Tabela Pedido
+  Future<int> salvarPedido(Pedido pedido) async{
+
+    var bancoDados = await db;
+    int resultado = await bancoDados.insert(pedidoTabela, pedido.toMap());
+    print("Banco Pedido "+resultado.toString());
+    return resultado;
+  }
+
+  recuperarPedido(String idusuario, String titulo) async{
+
+    var bancoDados = await db;
+    String sql = 'SELECT * FROM $pedidoTabela WHERE $pedidoIdLogado = "$idusuario" AND $pedidoTitulo = "$titulo"';
+
+    List pedidos = await bancoDados.rawQuery(sql);
+    return pedidos;
+  }
+
+  
+
+  
 
 /*
   recuperarAnimaisId(int posicao) async{
