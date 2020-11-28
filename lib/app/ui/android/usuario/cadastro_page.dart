@@ -101,12 +101,6 @@ class CadastroPage extends GetView<UserController> {
 
               TextFormField(
                 controller: _userController.enderecoTextController,
-                validator: (value){
-                  if(value.isEmpty){
-                    return "Campo obrigatório.";
-                  }
-                  return null;
-                },
                 keyboardType: TextInputType.streetAddress,
                 autofocus: false,
                 decoration: InputDecoration(

@@ -95,7 +95,7 @@ class _RodapeState extends State<Rodape> {
                                 onPressed: () {
                                  // Navigator.pop(context);
                                  // Navigator.push(context,MaterialPageRoute(builder: (context)=> HomePage()));
-                                  Get.toNamed(Routes.HOME);
+                                  Get.toNamed(Routes.HOME);Get.toNamed(Routes.HOME);
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -122,7 +122,9 @@ class _RodapeState extends State<Rodape> {
                               width: 65,
                               color: Colors.white,
                               child: FlatButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.toNamed(Routes.OFERTAS);
+                                },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
