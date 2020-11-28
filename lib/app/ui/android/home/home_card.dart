@@ -82,8 +82,9 @@ class _CardInicialState extends State<CardInicial> {
                   ),
                   FlatButton(
                       onPressed: () async {
-                        final ByteData bytes = await rootBundle.load('assets/post01.png');
-                        await Share.file('esys image', 'esys.png', bytes.buffer.asUint8List(), 'image/png', text: 'Semana Profética - Igreja Nova Chance');
+                          final ByteData bytes = await rootBundle.load(widget.imagem);
+                          await Share.file('esys image', 'esys.png', bytes.buffer.asUint8List(), 'image/png', 
+                          text: 'Semana Profética - Igreja Nova Chance - entre os dias 26 a 06 de dezembro de 2020\n'+widget.descricao+"\nAcompanhe também pelo nosso canal no youtube\n https://www.youtube.com/user/Studioiir");
                       },
                       child: Icon(
                           Icons.share,

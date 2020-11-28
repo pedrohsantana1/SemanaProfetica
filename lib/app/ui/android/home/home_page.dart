@@ -38,9 +38,15 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.only(top: 10),
                         child: ListView(
                           children: <Widget>[
-                            CardInicial(titulo: "Venha celebrar conosco!",descricao: "Celebração das 10h e 18h30 aos Domingos!", imagem: "assets/post01.png",),
-                            CardInicial(titulo: "Já leu sua bíblia hoje?",descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vehi", imagem: "assets/post02.jpg",),
-                            CardInicial(titulo: "Venha celebrar conosco!",descricao: "Celebração das 10h e 18h30 aos Domingos!", imagem: "assets/post01.png",),
+                            CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar saúde para você e sua família", imagem: "assets/saude.jpg",),
+                            CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar estudos para você e sua família", imagem: "assets/estudos.jpg",),
+                            CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar sobre a sua família e casamento", imagem: "assets/familia.jpg",),
+                            CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar fé e ministério para você e sua família", imagem: "assets/fe.jpg",),
+                            CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar finanças para você e sua família", imagem: "assets/financas.jpg",),
+                            CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar gratidão para você e sua família", imagem: "assets/gratidao.jpg",),
+                            CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar imóveis e veiculos para você e sua família", imagem: "assets/imovel.jpg",),
+                            CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar salvação para você e sua família", imagem: "assets/salvacao.jpg",),
+
                           ],
                         ),
                       ),
