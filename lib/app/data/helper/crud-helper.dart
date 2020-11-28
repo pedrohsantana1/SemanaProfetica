@@ -147,10 +147,11 @@ class CrudHelper {
     int retorno = await bancoDados.rawUpdate(
       '''
         UPDATE $pedidoTabela 
-        SET pedido = ? 
+        SET pedido = ?,
+        realizado = ? 
         WHERE $pedidoIdLogado = ? AND $pedidoTitulo = ? AND $pedidoId = ?
         ''', 
-        [pedido.pedido, pedido.idUsuario, pedido.titulo, pedido.idTabela]
+        [pedido.pedido, pedido.realizado, pedido.idUsuario, pedido.titulo, pedido.idTabela]
     );
 
     return retorno;
@@ -189,10 +190,11 @@ Future<int> excluirPedido(Pedido pedido) async{
     int retorno = await bancoDados.rawUpdate(
       '''
         UPDATE $pedidoOutraTabela 
-        SET pedido = ? 
+        SET pedido = ?,
+        realizado = ? 
         WHERE $pedidoOutraIdLogado = ? AND $pedidoOutraTitulo = ? AND $pedidoOutraId = ?
         ''', 
-        [pedido.pedido, pedido.idUsuario, pedido.titulo, pedido.idTabela]
+        [pedido.pedido, pedido.realizado, pedido.idUsuario, pedido.titulo, pedido.idTabela]
     );
 
     return retorno;

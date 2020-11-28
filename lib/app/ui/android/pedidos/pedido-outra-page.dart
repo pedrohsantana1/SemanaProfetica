@@ -111,13 +111,20 @@ class _PedidosState extends State<PedidosOutra> {
     _pedidoController.texto.text = "";
   }
 
-  atualizarPedido(PedidoOutra pedido) {
+  atualizarPedido(PedidoOutra pedido, String verifica) {
     String textoDigitado = _pedidoController.texto.text;
-
+    
+    if(verifica == "1"){
+      pedido.pedido =  textoDigitado;
+    }
+    else{
+      pedido.pedido =  pedido.pedido;
+    }
     pedido.idUsuario = _homeController.user.id;
-    pedido.titulo = nomePedido;
-    pedido.pedido = textoDigitado;
-    pedido.realizado = "false";
+    pedido.titulo =  nomePedido;
+    pedido.realizado = pedido.realizado;
+
+    print("OK: "+pedido.realizado);
 
     _pedidoController.atualizar(pedido);
     recuperarPedidos();
@@ -129,7 +136,7 @@ class _PedidosState extends State<PedidosOutra> {
     Get.defaultDialog(
       title: "Semana Profética",
       onConfirm: () {
-        atualizarPedido(pedido);
+        atualizarPedido(pedido, "1");
         Get.back();
       },
       onCancel: () {},
@@ -252,6 +259,7 @@ class _PedidosState extends State<PedidosOutra> {
                                       setState(() {
                                         print("teste " + value.toString());
                                         pedido.realizado = value.toString();
+                                        atualizarPedido(pedido, "0");
                                       });
                                     },
                                   ),

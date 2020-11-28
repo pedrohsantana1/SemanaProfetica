@@ -44,6 +44,7 @@ List<Pedido> pedidos  = List<Pedido>() .obs;
     
     List<Map> pedidosRecuperados = await repository.carregarPedidos(idusuario, titulo);
     List<Pedido> listaTemporaria = List<Pedido>();
+    print("Pedido recuperado: "+pedidosRecuperados.toString());
 
     for (var item in pedidosRecuperados) {
         Pedido pedido = Pedido.fromMap(item);

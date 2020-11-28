@@ -115,25 +115,33 @@ class _PedidosState extends State<Pedidos> {
     _pedidoController.pedidoTextController.text = "";
   }
 
-  atualizarPedido(Pedido pedido) {
+  atualizarPedido(Pedido pedido, String verifica) {
     String textoDigitado = _pedidoController.pedidoTextController.text;
     
+    if(verifica == "1"){
+      pedido.pedido =  textoDigitado;
+    }
+    else{
+      pedido.pedido =  pedido.pedido;
+    }
     pedido.idUsuario = _homeController.user.id;
     pedido.titulo =  nomePedido;
-    pedido.pedido =  textoDigitado;
-    pedido.realizado = "false";
-  
+    pedido.realizado = pedido.realizado;
+
+    print("OK: "+pedido.realizado);
+
     _pedidoController.atualizar(pedido);
     recuperarPedidos();
     //_pedidoController.carregarPedidos();
     _pedidoController.pedidoTextController.text = "";
   }
 
+
   void CaixaDialogo(String texto, Pedido pedido) {
     Get.defaultDialog(
       title: "Semana Profética",
       onConfirm: () {
-        atualizarPedido(pedido);
+        atualizarPedido(pedido, "1");
         Get.back();
       },
       onCancel: () {},
@@ -184,7 +192,7 @@ class _PedidosState extends State<Pedidos> {
                             child: ListView.builder(
                               itemCount: _listaPedidos.length,
                               itemBuilder: (context, index) {
-                                final pedido = _listaPedidos[index];
+                                var pedido = _listaPedidos[index];
                                 bool valor;
                                 if (pedido.realizado == "true") {
                                   valor = true;
@@ -242,8 +250,9 @@ class _PedidosState extends State<Pedidos> {
                                     value: valor,
                                     onChanged: (value) {
                                       setState(() {
-                                        print("teste " + value.toString());
                                         pedido.realizado = value.toString();
+                                        print("Valor "+pedido.realizado);
+                                        atualizarPedido(pedido, "0");
                                       });
                                     },
                                   ),
