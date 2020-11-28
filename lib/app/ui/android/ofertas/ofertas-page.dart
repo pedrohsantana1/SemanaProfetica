@@ -32,26 +32,44 @@ class _OfertasState extends State<Ofertas> {
                         top: 30,
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
+                            height: 60,
+                            margin: EdgeInsets.all(30),
+                            alignment: Alignment.centerLeft,
                             decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              color: Colors.green,
-                            ),
-                            height: 80,
-                            // width: MediaQuery.of(context).size.width,
-                            child: FlatButton(
+                                color: Color(0xFF3C5A99),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            child: SizedBox.expand(
+                              child: FlatButton(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      "Dízimo / Oferta",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 20),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Container(
+                                      child: SizedBox(
+                                        child: Icon(Icons.monetization_on, color: Colors.white,),
+                                        height: 28,
+                                        width: 28,
+                                      ),
+                                    )
+                                  ],
+                                ),
                                 onPressed: () {
                                   _launchURL();
                                 },
-                                child: Text(
-                                  "Dízimo / Oferta",
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
-                                )),
+                              ),
+                            ),
                           ),
                         ],
                       )),
