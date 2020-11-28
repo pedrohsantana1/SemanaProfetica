@@ -25,7 +25,7 @@ class _RodapeState extends State<Rodape> {
             child: Stack(
               children: <Widget>[
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height / 100,
+                  //bottom: MediaQuery.of(context).size.height,
                   child: Padding(
                     padding: EdgeInsets.only(top: 10, bottom: 10),
                     child: ClipRRect(
@@ -33,7 +33,7 @@ class _RodapeState extends State<Rodape> {
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              height: MediaQuery.of(context).size.height - 690,
+                              height: MediaQuery.of(context).size.height / 20,
                               width: MediaQuery.of(context).size.width,
                               color: Colors.white,
                               child: Padding(

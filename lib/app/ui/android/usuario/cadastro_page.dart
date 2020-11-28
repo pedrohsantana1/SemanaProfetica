@@ -37,8 +37,6 @@ class CadastroPage extends GetView<UserController> {
                 validator: (value){
                   if(value.isEmpty){
                     return "Campo obrigatório.";
-                  }else if( !GetUtils.isUsername(value) ){
-                    return "Campo requer um Nome válido.";
                   }
                   return null;
                 },
