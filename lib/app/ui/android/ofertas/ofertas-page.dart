@@ -32,13 +32,13 @@ class _OfertasState extends State<Ofertas> {
                         top: 30,
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(30)),
-                              color: Colors.black12,
+                              color: Colors.green,
                             ),
                             height: 80,
                             // width: MediaQuery.of(context).size.width,

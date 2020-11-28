@@ -66,10 +66,23 @@ class _PedidosState extends State<Pedidos> {
             },
             label: 'Pedir para alguém',
             labelStyle: TextStyle(fontWeight: FontWeight.w500),
-            labelBackgroundColor: Colors.grey),
+            labelBackgroundColor: Colors.grey
+        ),
+        SpeedDialChild(
+            child: Icon(Icons.monetization_on, color: Colors.white),
+            backgroundColor: Colors.green,
+            onTap: () {
+              Get.offAndToNamed(Routes.OFERTAS,);
+            },
+            label: 'Dízimo / Oferta',
+            labelStyle: TextStyle(fontWeight: FontWeight.w500),
+            labelBackgroundColor: Colors.green
+        ),
       ],
     );
   }
+
+  
 
   recuperarPedidos() async {
     List pedidosRecuperados = await _pedidoController.carregarPedidos(

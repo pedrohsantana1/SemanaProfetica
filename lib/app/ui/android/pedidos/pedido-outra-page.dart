@@ -66,6 +66,17 @@ class _PedidosState extends State<PedidosOutra> {
             label: 'Voltar',
             labelStyle: TextStyle(fontWeight: FontWeight.w500),
             labelBackgroundColor: Colors.grey),
+        SpeedDialChild(
+            child: Icon(Icons.monetization_on, color: Colors.white),
+            backgroundColor: Colors.green,
+            onTap: () {
+              Get.offAndToNamed(
+                Routes.OFERTAS,
+              );
+            },
+            label: 'Dízimo / Oferta',
+            labelStyle: TextStyle(fontWeight: FontWeight.w500),
+            labelBackgroundColor: Colors.green),
       ],
     );
   }
