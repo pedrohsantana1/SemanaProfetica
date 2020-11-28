@@ -42,6 +42,7 @@ class UserController extends GetxController {
       _db.salvarUsuario(novoUsuario);
        Get.offAllNamed(Routes.HOME);
     } else {
+      Get.back();
       showSnackBar("Atenção", "Usuário não encontrado", Colors.red);
     }
   }
@@ -66,4 +67,6 @@ class UserController extends GetxController {
         backgroundColor: cor,
         colorText: Colors.black);
   }
+
+  
 }

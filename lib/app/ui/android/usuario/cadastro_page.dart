@@ -163,6 +163,9 @@ class CadastroPage extends GetView<UserController> {
                   ),
                   onPressed: (){ 
                     if(_formKey.currentState.validate()){
+                     if(_userController.enderecoTextController.text.isEmpty){
+                       _userController.enderecoTextController.text = "Não informado";
+                     }
                       Usuario user = Usuario(
                       nome: _userController.nomeTextController.text,
                        email: _userController.emailTextController.text,
@@ -172,7 +175,7 @@ class CadastroPage extends GetView<UserController> {
                        telefone: _userController.telefoneTextController.text,
                        imagem: null,
                        );
-                     _userController.cadastrar(user);
+                     circularProgresso(context, _userController, user);
                     }
                   },
                   padding: EdgeInsets.all(12.0),
@@ -192,4 +195,30 @@ class CadastroPage extends GetView<UserController> {
       ),
     );
   }
+}
+
+  circularProgresso(BuildContext context, UserController _userController, Usuario user) async{
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: new Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              new CircularProgressIndicator(),
+              new Text("Cadastrando Usuario"),
+            ],
+          ),
+        );
+      },
+    );
+    new Future.delayed(new Duration(seconds: 3), () async {
+
+      _userController.cadastrar(user);
+    
+
+    });
+
 }

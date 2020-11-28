@@ -79,9 +79,11 @@ class LoginPage extends GetView<UserController> {
                       borderRadius: BorderRadius.circular(24)),
                   onPressed: () {
                     if(_formKey.currentState.validate()){
+                     circularProgresso(context, _userController);
+                     /*
                      _userController.login(
                         _userController.loginEmailTextController.text,
-                        _userController.loginSenhaTextController.text);
+                        _userController.loginSenhaTextController.text);*/
                     
                     }
                   },
@@ -113,4 +115,32 @@ class LoginPage extends GetView<UserController> {
       ),
     );
   }
+}
+
+  circularProgresso(BuildContext context, UserController _userController) async{
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: new Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              new CircularProgressIndicator(),
+              new Text("Verificando Usuario"),
+            ],
+          ),
+        );
+      },
+    );
+    new Future.delayed(new Duration(seconds: 3), () async {
+
+      _userController.login(
+                        _userController.loginEmailTextController.text,
+                        _userController.loginSenhaTextController.text);
+    
+
+    });
+
 }
