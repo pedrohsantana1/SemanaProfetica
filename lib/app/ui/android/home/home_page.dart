@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.only(top: 10),
                         child: ListView(
                           children: <Widget>[
+                            CardInicial(titulo: "Semana Profética",descricao: "Convite especial do Ap. Sérgio Paulo", imagem: "assets/apostolo.jpg",),
                             CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar saúde para você e sua família", imagem: "assets/saude.jpg",),
                             CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar estudos para você e sua família", imagem: "assets/estudos.jpg",),
                             CardInicial(titulo: "Semana Profética",descricao: "Venha profetizar sobre a sua família e casamento", imagem: "assets/familia.jpg",),
